@@ -8,14 +8,6 @@ RecipeFinder is a tool for finding delicious recipes. With RecipeFinder, you can
 - Find recipes that match your time preference 
 - Browse a collection of delicious and authentic Indian recipes
 
-## Getting Started
-
-To start using RecipeFinder, follow these steps:
-
-1. Clone the repository: `git clone https://github.com/ZeqingZhou/SI507_Final_Project_RecipeFinder.git`
-2. Install the required dependencies: `pip install -r requirements.txt`
-3. Run the application: `python app.py`
-
 ## Contributing
 
 We welcome contributions to RecipeFinder! If you have an idea for a new feature or improvement, please open an issue or submit a pull request.
