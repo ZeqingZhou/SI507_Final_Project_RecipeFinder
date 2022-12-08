@@ -28,7 +28,7 @@ To download and set up the project on your local machine, follow these steps:
 ## Usage
 
 To run the program, use the following command:
-python recipe_scraper.py
+`python Final_proj_RecipeFinder.py`
 
 This will scrape recipe data from a website, create `Recipe` objects for each recipe, and save the data to a cache file. When the program is run again, it will load the cache file and convert the saved data back into `Recipe` objects.
 
