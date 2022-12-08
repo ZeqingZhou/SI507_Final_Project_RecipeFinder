@@ -14,8 +14,8 @@ You will need to have the following libraries installed:
 - [Requests](https://pypi.org/project/requests/)
 
 You can install these libraries using `pip`:
-pip install beautifulsoup4
-pip install requests
+`pip install beautifulsoup4`
+`pip install requests`
 
 ### Installing
 
