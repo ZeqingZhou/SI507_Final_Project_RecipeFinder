@@ -6,6 +6,15 @@ import json
 CACHE_FILE_NAME = 'recipe_cache.json'
 
 def load_cache(CACHE_FILE_NAME):
+    """
+    Loads the contents of a cache file with the given file name.
+
+    Args:
+        CACHE_FILE_NAME (str): The name of the cache file to load.
+
+    Returns:
+        cache: A dictionary containing the contents of the cache file, or an empty dictionary if the file cannot be opened or read.
+    """
     try:
         cache_file = open(CACHE_FILE_NAME, 'r')
         cache_file_contents = cache_file.read()
@@ -17,6 +26,13 @@ def load_cache(CACHE_FILE_NAME):
 
 
 def save_cache(CACHE_FILE_NAME, cache):
+    """Saves the contents of a dictionary to a cache file with the given file name.
+
+    Args:
+        CACHE_FILE_NAME (str): The name of the cache file to create or overwrite.
+        cache (dict): The dictionary containing the data to save to the cache file.
+    """
+
     cache_file = open(CACHE_FILE_NAME, 'w')
     contents_to_write = json.dumps(cache)
     cache_file.write(contents_to_write)
@@ -30,12 +46,19 @@ class Recipe:
         self.url = url
     
     def json(self):
+        """Returns a dictionary containing the object's data.
+
+        Returns:
+            dict: A dictionary containing the object's data.
+        """
         return {
             'url' : self.url,  
             'name' : self.name, 
             'ingredient': self.ingre,
             'cooktime': self.cooktime,
         }
+
+
 
 
         
@@ -46,6 +69,14 @@ def get_soup(url):
     
         
 def get_recipe_time(url):
+    """Extracts the cook time from a recipe webpage.
+
+    Args:
+        url (str): The URL of the recipe webpage to scrape.
+
+    Returns:
+        str: The cook time of the recipe, or an empty string if the cook time cannot be found or the URL is invalid.
+    """
     try:
         soup = get_soup(url)
 
@@ -59,6 +90,14 @@ def get_recipe_time(url):
         return ''
 
 def get_recipe_ingre(url):
+    """Extracts the ingredients from a recipe webpage.
+
+    Args:
+        url (str): The URL of the recipe webpage to scrape.
+
+    Returns:
+        list: A list of ingredients from the recipe, or an empty list if the ingredients cannot be found or the URL is invalid.
+    """
     try:
         soup = get_soup(url)
 
@@ -77,6 +116,14 @@ def get_recipe_ingre(url):
         return []
 
 def get_recipe_name(url):
+    """Extracts the name of a recipe from a recipe webpage.
+
+    Args:
+        url (str): The URL of the recipe webpage to scrape.
+
+    Returns:
+        str: The name of the recipe, or an empty string if the name cannot be found or the URL is invalid.
+    """
     try:
         soup = get_soup(url)
 
@@ -87,9 +134,16 @@ def get_recipe_name(url):
         return ""
 
 def convert_time(time):
+
+    """Converts a string containing a cook time to a number of minutes.
+
+    Args:
+        time (str): The cook time string to convert, in the format "X h Y m" where X and Y are numbers representing the number of hours and minutes, respectively.
+
+    Returns:
+        int: The cook time in minutes, or 0 if the input string is invalid or cannot be converted.
     """
-    convert a string to a int with unit of minutes
-    """
+
     time_dict = {}
     time_list = time.split()
     time = 0
@@ -120,6 +174,14 @@ def convert_time(time):
         return 0
 
 def create_recipe(url):
+    """Creates a Recipe object from a recipe webpage.
+
+    Args:
+        url (str): The URL of the recipe webpage to scrape.
+
+    Returns:
+        Recipe: A Recipe object containing the data from the webpage, or None if the recipe cannot be found or the URL is invalid.
+    """
     
     name = get_recipe_name(url)
     ingre = get_recipe_ingre(url)
@@ -132,6 +194,14 @@ def create_recipe(url):
     return recipe_class
 
 def get_kind_url(base_recipe_url):
+    """Extracts the URLs of all the categories on a recipe category webpage.
+
+    Args:
+        base_recipe_url (str): The URL of the recipe category webpage to scrape.
+
+    Returns:
+        list: A list of URLs of categories on the webpage, or an empty list if the URLs cannot be found or the URL is invalid.
+    """
     soup = get_soup(base_recipe_url)
     recipe_url_tag = soup.find('div', class_='kt-row-column-wrap kt-has-6-columns kt-gutter-default kt-v-gutter-default kt-row-valign-top kt-row-layout-equal kt-tab-layout-two-grid kt-m-colapse-left-to-right kt-mobile-layout-two-grid')
     url_div_list = recipe_url_tag.find_all('div', recursive=False)
@@ -145,6 +215,14 @@ def get_kind_url(base_recipe_url):
     return url_list
 
 def get_recipe_url(base_url):
+    """Extracts the URLs of all the recipes on a category webpage.
+
+    Args:
+        base_url (str): The URL of the recipe archive webpage to scrape.
+
+    Returns:
+        list: A list of URLs of recipes on the webpage, or an empty list if the URLs cannot be found or the URL is invalid.
+    """
     soup = get_soup(base_url)
     recipe_list_parent = soup.find('div', class_='content-wrap grid-cols post-archive grid-sm-col-2 grid-lg-col-3 item-image-style-above')
     # print(recipe_list_parent)
@@ -159,6 +237,15 @@ def get_recipe_url(base_url):
 
 
 def get_recipe_using_cache(url, cache):
+    """Fetches a recipe from a cache of recipes, or creates a new recipe and saves it to the cache if it is not found in the cache.
+
+    Args:
+        url (str): The URL of the recipe to fetch.
+        cache (list): A list of recipes where each recipe is represented as a dictionary.
+
+    Returns:
+        dict: A dictionary representation of the recipe, either from the cache or created from the URL.
+    """
     url_list = [recipe['url'] for recipe in cache]
 
     if url in url_list: # the url is our unique key
@@ -175,6 +262,16 @@ def get_recipe_using_cache(url, cache):
         return recipe
 
 def get_results(ingr1, ingr2, cache):
+    """Searches a cache of recipes for those containing two specified ingredients, and returns a list of up to a specified number of matching recipes.
+
+    Args:
+        ingr1 (str): The first ingredient to search for.
+        ingr2 (str): The second ingredient to search for.
+        cache (list): A list of recipes where each recipe is represented as a dictionary.
+
+    Returns:
+        list: A list of up to the specified number of recipes containing the two specified ingredients, or an empty list if no matching recipes are found.
+    """
     while True:
         count_str = input('Enter the maximum number of recipes to retrieve: ')
         try:
@@ -209,9 +306,9 @@ def get_results(ingr1, ingr2, cache):
 def main():
     
 
-    base_recipe_url = 'https://www.indianhealthyrecipes.com/recipes/'
-    category_url = get_kind_url(base_recipe_url)
-    # print(category_url)
+    # base_recipe_url = 'https://www.indianhealthyrecipes.com/recipes/'
+    # category_url = get_kind_url(base_recipe_url)
+    # # print(category_url)
 
     # recipe_list_total = []
     # for url in category_url:
@@ -268,19 +365,7 @@ def main():
             for recipe in recipe_list_new:
                 number = number + 1 
                 print(str(number) + '. ' + recipe['name'])
-            
-            # while True:
-            #     term = input('Please enter a number to get the full recipe: ')
-            #     try:
-            #         number_int = int(term)
-            #         if number_int < 1:
-            #             print('Please enter a number larger than 0.')
-            #         elif number_int > len(recipe_list_new):
-            #             print('Please enter a valid number less than the largest number in the list above.')
-            #         else:
-            #             break
-            #     except:
-            #         print('Please enter a valid number.')
+
 
             while True:
                 term = input('Please enter a number to get the full recipe: ')
