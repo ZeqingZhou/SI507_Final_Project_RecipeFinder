@@ -21,9 +21,7 @@ You can install these libraries using `pip`:
 
 To download and set up the project on your local machine, follow these steps:
 
-1. Clone the repository to your local machine using `git clone https://github.com/YOUR_USERNAME/recipe-scraper.git`
-2. Navigate to the project directory using `cd recipe-scraper`
-3. Install the required libraries using `pip install -r requirements.txt`
+Download `Final_proj_RecipeFinder.py` and `recipe_cache.json`. Put them in one folder. Open `Final_proj_RecipeFinder.py` with VScode, and run the whole profile. 
 
 ## Usage
 
